@@ -1,7 +1,11 @@
+import { Typography } from "@mui/material";
+
 function App() {
   return (
     <>
-      <h1>Hello world</h1>
+      <Typography variant="h1" component="h1">
+        Hello world
+      </Typography>
     </>
   );
 }
