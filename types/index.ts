@@ -13,7 +13,7 @@ export const personalDetailsSchema = Yup.object().shape({
     .oneOf(["Aadhar", "PAN"], "Invalid ID type")
     .required("ID type is required"),
   govtIssuedId: Yup.string().when("govtIssuedIdType", (idType, schema) => {
-    return idType.join("") === "PAN"
+    return idType.join("") === "Aadhar"
       ? schema
           .length(12, "Aadhar number must be 12 characters long")
           .matches(
@@ -34,10 +34,7 @@ export const addressSchema = Yup.object().shape({
   pincode: Yup.string().matches(/^[0-9]*$/, "Pincode must be numeric"),
 });
 
-export const userInfoSchema = Yup.object().shape({
-  personalDetails: personalDetailsSchema,
-  address: addressSchema,
-});
+export const userInfoSchema = addressSchema.concat(personalDetailsSchema);
 
 export type PersonalDetails = Yup.InferType<typeof personalDetailsSchema>;
 export type Address = Yup.InferType<typeof addressSchema>;
