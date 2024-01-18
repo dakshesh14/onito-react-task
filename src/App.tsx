@@ -2,12 +2,17 @@ import { useState } from "react";
 // react hook form
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
+// redux
+import { useSelector, useDispatch } from "react-redux";
 // material ui
 import { Button, Grid } from "@mui/material";
 // types
 import { UserInfo, userInfoSchema } from "../types/index";
 // components
 import { PersonalInfo, AddressInfo } from "./components";
+// actions
+import { addUser } from "./actions/user-actions";
+import { RootState } from "./reducers";
 
 // TODO: remove before pushing
 const defaultValues: UserInfo = {
@@ -30,12 +35,17 @@ function App() {
     resolver: yupResolver(userInfoSchema),
   });
 
+  // states
   const [currentStep, setCurrentStep] = useState(0);
 
-  const onSubmit = (data: UserInfo) => {
-    if (currentStep === 0) setCurrentStep(1);
+  // derived values
+  const users = useSelector((state: RootState) => state.users);
+  const dispatch = useDispatch();
 
-    console.log(data);
+  const onSubmit = (data: UserInfo) => {
+    if (currentStep === 0) return setCurrentStep(1);
+
+    dispatch(addUser(data));
   };
 
   return (
@@ -61,6 +71,10 @@ function App() {
             <Button variant="outlined" type="submit">
               {currentStep === 0 ? "Next" : "Submit"}
             </Button>
+          </Grid>
+
+          <Grid item xs={12} overflow={"auto"}>
+            <pre>{JSON.stringify(users, null, 2)}</pre>
           </Grid>
         </Grid>
       </form>
