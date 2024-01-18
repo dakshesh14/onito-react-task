@@ -14,7 +14,6 @@ import { PersonalInfo, AddressInfo, CTable } from "./components";
 import { addUser } from "./actions/user-actions";
 import { RootState } from "./reducers";
 
-// TODO: remove before pushing
 const defaultValues: UserInfo = {
   name: "",
   age: 18,
