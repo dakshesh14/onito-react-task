@@ -1,12 +1,35 @@
+import { useEffect, useState } from "react";
 // react hook form
 import { useFormContext, Controller } from "react-hook-form";
 // material ui
-import { TextField, Grid } from "@mui/material";
+import { TextField, Grid, Autocomplete } from "@mui/material";
 // types
-import { UserInfo } from "../../types/index";
+import { UserInfo, Country } from "../../types";
 
 export const AddressInfo: React.FC = () => {
-  const { control } = useFormContext<UserInfo>();
+  const { control, watch } = useFormContext<UserInfo>();
+
+  // states
+  const [countriesOptions, setCountriesOptions] = useState<string[]>([]);
+
+  // derived values
+  const country = watch("country");
+
+  useEffect(() => {
+    async function getCountries() {
+      const res = await fetch(
+        `https://restcountries.com/v3.1/name/${country || ""}`
+      );
+      const data = await res.json();
+      return data as Country[];
+    }
+
+    if (country !== "")
+      getCountries().then((data) => {
+        const options = data.map((country) => country.name.common);
+        setCountriesOptions(options);
+      });
+  }, [country]);
 
   return (
     <Grid container spacing={2}>
@@ -33,12 +56,19 @@ export const AddressInfo: React.FC = () => {
           control={control}
           render={({ field, formState }) => (
             <>
-              <TextField
-                label="Country"
-                error={!!formState.errors.country}
-                helperText={formState.errors.country?.message}
-                {...field}
+              <Autocomplete
+                options={countriesOptions}
                 fullWidth
+                getOptionLabel={(option) => option || ""}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    {...field}
+                    label="Country"
+                    error={!!formState.errors.country}
+                    helperText={formState.errors.country?.message}
+                  />
+                )}
               />
             </>
           )}

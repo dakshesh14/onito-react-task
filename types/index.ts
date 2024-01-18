@@ -40,3 +40,5 @@ export type PersonalDetails = Yup.InferType<typeof personalDetailsSchema>;
 export type Address = Yup.InferType<typeof addressSchema>;
 
 export type UserInfo = Yup.InferType<typeof userInfoSchema>;
+
+export * from "./countries";
