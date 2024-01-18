@@ -5,7 +5,7 @@ import { FormProvider, useForm } from "react-hook-form";
 // redux
 import { useSelector, useDispatch } from "react-redux";
 // material ui
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 // types
 import { UserInfo, userInfoSchema } from "../types/index";
 // components
@@ -46,6 +46,10 @@ function App() {
     if (currentStep === 0) return setCurrentStep(1);
 
     dispatch(addUser(data));
+
+    // resetting
+    control.reset();
+    setCurrentStep(0);
   };
 
   return (
@@ -53,6 +57,9 @@ function App() {
       <form onSubmit={control.handleSubmit(onSubmit)}>
         <Grid container spacing={2} height={"100vh"} padding={2}>
           <Grid item xs={12}>
+            <Typography variant="h4" marginBottom={4} fontWeight="bold">
+              {currentStep === 0 ? "Personal Info" : "Address Info"}
+            </Typography>
             {currentStep === 0 ? <PersonalInfo /> : <AddressInfo />}
           </Grid>
 

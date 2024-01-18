@@ -18,6 +18,13 @@ type Props = {
 export const CTable: React.FC<Props> = (props) => {
   const { columns, data } = props;
 
+  if (data.length === 0)
+    return (
+      <Typography variant="h6" textAlign="center">
+        No data
+      </Typography>
+    );
+
   return (
     <TableContainer>
       <Table>
