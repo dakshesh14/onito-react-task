@@ -9,19 +9,19 @@ import { Button, Grid } from "@mui/material";
 // types
 import { UserInfo, userInfoSchema } from "../types/index";
 // components
-import { PersonalInfo, AddressInfo } from "./components";
+import { PersonalInfo, AddressInfo, CTable } from "./components";
 // actions
 import { addUser } from "./actions/user-actions";
 import { RootState } from "./reducers";
 
 // TODO: remove before pushing
 const defaultValues: UserInfo = {
-  name: "Dakshesh",
-  age: 20,
+  name: "",
+  age: 18,
   sex: "Male",
-  mobile: "8888888888",
+  mobile: "",
   govtIssuedIdType: "Aadhar",
-  govtIssuedId: "564635786315",
+  govtIssuedId: "",
   addressLine1: "",
   country: "",
   state: "",
@@ -56,7 +56,7 @@ function App() {
             {currentStep === 0 ? <PersonalInfo /> : <AddressInfo />}
           </Grid>
 
-          <Grid style={{ marginTop: "auto" }} item xs={12}>
+          <Grid item xs={12}>
             {currentStep === 1 && (
               <Button
                 style={{ marginRight: "10px" }}
@@ -73,8 +73,8 @@ function App() {
             </Button>
           </Grid>
 
-          <Grid item xs={12} overflow={"auto"}>
-            <pre>{JSON.stringify(users, null, 2)}</pre>
+          <Grid item xs={12}>
+            <CTable columns={["name", "age", "sex"]} data={users} />
           </Grid>
         </Grid>
       </form>
